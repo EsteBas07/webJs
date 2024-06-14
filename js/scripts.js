@@ -91,9 +91,54 @@ function  RelojDigital(){
     $tiempo.innerHTML = timeString
 
     let semanaDia = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
-    $fecha.innerHTML = semanaDia[semana]+' '+ dia +'/'+ mes+'/'+anio
-    
+    $fecha.innerHTML = semanaDia[semana]+' '+ dia +'/'+ mes+'/'+anio;    
 }
 setInterval(( ()=>{RelojDigital()}),1000);
+
+//API
+
+const API_URL = 'https://randomuser.me/api/';
+
+const xhr = new XMLHttpRequest();
+
+function onRequest(){
+    if(this.readyState ===4 && this.status===200){
+        const data = JSON.parse(this.response);
+        console.log(data);
+        
+        let tabla = document.getElementById('tabla_name')
+        let html = `<thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
+          <th scope="col">Celular</th>
+          <th scope="col">Ciudad</th>
+          <th scope="col">Genero</th>
+          <th></th>
+        </tr>
+      </thead>
+      <thead>
+        <tr>
+          <th scope="col">1</th>
+          <th scope="col">${data.results[0].name.first}</th>
+          <th scope="col">${data.results[0].name.last}</th>
+          <th scope="col">${data.results[0].phone}</th>
+          <th scope="col">${data.results[0].location.city}</th>
+          <th scope="col">${data.results[0].gender}</th>
+          <th></th>
+        </tr>
+      </thead>
+      `;
+        tabla.innerHTML= html;
+    }
+}
+
+
+function FormularioCrear(){
+    xhr.addEventListener("load", onRequest);
+    xhr.open('GET',API_URL);
+    xhr.send();
+}
 
 
